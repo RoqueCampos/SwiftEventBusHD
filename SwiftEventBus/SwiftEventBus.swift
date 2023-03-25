@@ -1,6 +1,6 @@
 import Foundation
 
-open class SwiftEventBus {
+@objc open class SwiftEventBus:NSObject {
     
     struct Static {
         static let instance = SwiftEventBus()
@@ -20,31 +20,31 @@ open class SwiftEventBus {
     ////////////////////////////////////
     
     
-    open class func post(_ name: String, sender: Any? = nil) {
+    @objc open class func post(_ name: String, sender: Any? = nil) {
         NotificationCenter.default.post(name: Notification.Name(rawValue: name), object: sender)
     }
     
-    open class func post(_ name: String, sender: NSObject?) {
+    @objc open class func postNSObject(_ name: String, sender: NSObject?) {
         NotificationCenter.default.post(name: Notification.Name(rawValue: name), object: sender)
     }
     
-    open class func post(_ name: String, sender: Any? = nil, userInfo: [AnyHashable: Any]?) {
+    @objc open class func post(_ name: String, sender: Any? = nil, userInfo: [AnyHashable: Any]?) {
         NotificationCenter.default.post(name: Notification.Name(rawValue: name), object: sender, userInfo: userInfo)
     }
     
-    open class func postToMainThread(_ name: String, sender: Any? = nil) {
+    @objc open class func postToMainThread(_ name: String, sender: Any? = nil) {
         DispatchQueue.main.async {
             NotificationCenter.default.post(name: Notification.Name(rawValue: name), object: sender)
         }
     }
     
-    open class func postToMainThread(_ name: String, sender: NSObject?) {
+    @objc open class func postToMainThreadNSObject(_ name: String, sender: NSObject?) {
         DispatchQueue.main.async {
             NotificationCenter.default.post(name: Notification.Name(rawValue: name), object: sender)
         }
     }
     
-    open class func postToMainThread(_ name: String, sender: Any? = nil, userInfo: [AnyHashable: Any]?) {
+    @objc open class func postToMainThread(_ name: String, sender: Any? = nil, userInfo: [AnyHashable: Any]?) {
         DispatchQueue.main.async {
             NotificationCenter.default.post(name: Notification.Name(rawValue: name), object: sender, userInfo: userInfo)
         }
@@ -57,7 +57,7 @@ open class SwiftEventBus {
     ////////////////////////////////////
     
     @discardableResult
-    open class func on(_ target: AnyObject, name: String, sender: Any? = nil, queue: OperationQueue?, handler: @escaping ((Notification?) -> Void)) -> NSObjectProtocol {
+    @objc open class func on(_ target: AnyObject, name: String, sender: Any? = nil, queue: OperationQueue?, handler: @escaping ((Notification?) -> Void)) -> NSObjectProtocol {
         let id = UInt(bitPattern: ObjectIdentifier(target))
         let observer = NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: name), object: sender, queue: queue, using: handler)
         let namedObserver = NamedObserver(observer: observer, name: name)
@@ -74,12 +74,12 @@ open class SwiftEventBus {
     }
     
     @discardableResult
-    open class func onMainThread(_ target: AnyObject, name: String, sender: Any? = nil, handler: @escaping ((Notification?) -> Void)) -> NSObjectProtocol {
+    @objc open class func onMainThread(_ target: AnyObject, name: String, sender: Any? = nil, handler: @escaping ((Notification?) -> Void)) -> NSObjectProtocol {
         return SwiftEventBus.on(target, name: name, sender: sender, queue: OperationQueue.main, handler: handler)
     }
     
     @discardableResult
-    open class func onBackgroundThread(_ target: AnyObject, name: String, sender: Any? = nil, handler: @escaping ((Notification?) -> Void)) -> NSObjectProtocol {
+    @objc open class func onBackgroundThread(_ target: AnyObject, name: String, sender: Any? = nil, handler: @escaping ((Notification?) -> Void)) -> NSObjectProtocol {
         return SwiftEventBus.on(target, name: name, sender: sender, queue: OperationQueue(), handler: handler)
     }
     
@@ -87,7 +87,7 @@ open class SwiftEventBus {
     // Unregister
     ////////////////////////////////////
     
-    open class func unregister(_ target: AnyObject) {
+    @objc open class func unregister(_ target: AnyObject) {
         let id = UInt(bitPattern: ObjectIdentifier(target))
         let center = NotificationCenter.default
         
@@ -100,7 +100,7 @@ open class SwiftEventBus {
         }
     }
     
-    open class func unregister(_ target: AnyObject, name: String) {
+    @objc open class func unregister(_ target: AnyObject, name: String) {
         let id = UInt(bitPattern: ObjectIdentifier(target))
         let center = NotificationCenter.default
         
