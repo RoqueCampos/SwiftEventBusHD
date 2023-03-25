@@ -1,4 +1,4 @@
-#Custom version, added   spec.swift_versions = "5.0" to the podspec file
+Custom version, added   spec.swift_versions = "5.0" to the podspec file and exported the class and functions with @objc 
 
 # SwiftEventBus
 [![Language](https://img.shields.io/badge/Swift-5.0-green.svg?style=flat)](http://cocoapods.org/pods/SwiftEventBus)
